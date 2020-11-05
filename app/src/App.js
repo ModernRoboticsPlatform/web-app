@@ -7,7 +7,10 @@ import { orientationAction } from './actions';
 class App extends Component {
 
   componentDidMount() {
-    const client = new W3CWebSocket('ws://192.168.1.188:30080/websocket');
+    const websockerUrl = 'ws://' + window.location.host + '/websocket'
+    console.log( "Connecting to: " + websockerUrl )
+
+    const client = new W3CWebSocket( websockerUrl  );
     client.onopen = () => {
       client.send("message")
       console.log('WebSocket Client Connected');
@@ -29,7 +32,7 @@ class App extends Component {
       <div>
         Orientation
         <div>
-          <div className="ui labeled button" tabindex="0">
+          <div className="ui labeled button" tabIndex="0">
             <div className="ui red button">
               <i className="fighter jet icon"></i> Pitch
             </div>
@@ -39,7 +42,7 @@ class App extends Component {
           </div>
         </div>
         <div>
-          <div className="ui labeled button" tabindex="0">
+          <div className="ui labeled button" tabIndex="0">
             <div className="ui basic green button">
               <i className="plane icon"></i> Roll
             </div>
@@ -49,7 +52,7 @@ class App extends Component {
           </div>
        <div>
        </div>
-          <div className="ui labeled button" tabindex="0">
+          <div className="ui labeled button" tabIndex="0">
             <div className="ui basic blue button">
               <i className="space shuttle icon"></i> Yaw
             </div>
@@ -60,7 +63,7 @@ class App extends Component {
        </div>
         Acceleration
         <div>
-          <div className="ui labeled button" tabindex="0">
+          <div className="ui labeled button" tabIndex="0">
             <div className="ui red button">
               <i className="fighter jet icon"></i> X
             </div>
@@ -70,7 +73,7 @@ class App extends Component {
           </div>
         </div>
         <div>
-          <div className="ui labeled button" tabindex="0">
+          <div className="ui labeled button" tabIndex="0">
             <div className="ui basic green button">
               <i className="plane icon"></i> Y
             </div>
@@ -80,7 +83,7 @@ class App extends Component {
           </div>
        <div>
        </div>
-          <div className="ui labeled button" tabindex="0">
+          <div className="ui labeled button" tabIndex="0">
             <div className="ui basic blue button">
               <i className="space shuttle icon"></i> Z
             </div>
@@ -91,7 +94,7 @@ class App extends Component {
        </div>
        Heading
        <div>
-          <div className="ui labeled button" tabindex="0">
+          <div className="ui labeled button" tabIndex="0">
             <div className="ui basic blue button">
               <i className="compass outline icon"></i> Degrees
             </div>
