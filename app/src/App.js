@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-import { orientationAction } from './actions';
+import { messageReceivedAction } from './actions';
 
 class App extends Component {
 
@@ -12,13 +12,17 @@ class App extends Component {
 
     const client = new W3CWebSocket( websockerUrl  );
     client.onopen = () => {
-      client.send("message")
+      client.send( JSON.stringify( { "type":"subscribe", "data": ["telemetry"] } ) )
       console.log('WebSocket Client Connected');
     };
 
+    setInterval(() => {
+      client.send( JSON.stringify( { "type":"ping","data": Date.now() } ) )
+    }, 500)
+
     client.onmessage = ( message ) => {
       if( message.data ){
-        this.props.orientationAction( JSON.parse( message.data ))
+        this.props.messageReceivedAction( JSON.parse( message.data ))
       }
       else {
         console.log( message )
@@ -30,7 +34,10 @@ class App extends Component {
   render() { 
     return (
       <div>
-        Orientation
+        <div>
+          <b>Ping:</b> { this.props.ping }ms
+        </div>
+        <b>Orientation</b>
         <div>
           <div className="ui labeled button" tabIndex="0">
             <div className="ui red button">
@@ -61,7 +68,7 @@ class App extends Component {
             </a>
           </div>
        </div>
-        Acceleration
+        <b>Acceleration</b>
         <div>
           <div className="ui labeled button" tabIndex="0">
             <div className="ui red button">
@@ -92,7 +99,7 @@ class App extends Component {
             </a>
           </div>
        </div>
-       Heading
+       <b>Heading</b>
        <div>
           <div className="ui labeled button" tabIndex="0">
             <div className="ui basic blue button">
@@ -113,7 +120,8 @@ const mapStateToProps = (state) => {
   return { 
      orientation: state.orientation,
      acceleration: state.acceleration,
-     compass: state.compass
+     compass: state.compass,
+     ping: state.ping
    };
 };
 
@@ -121,4 +129,4 @@ const mapStateToProps = (state) => {
 //
 // Bind mapStateToProps and the selected action creator
 //
-export default connect(mapStateToProps, { orientationAction } )(App);
+export default connect(mapStateToProps, { messageReceivedAction } )(App);

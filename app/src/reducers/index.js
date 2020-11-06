@@ -54,11 +54,23 @@ const compassReducer = (compass = COMPASS , action ) => {
   return compass;
 };
 
+
+const pingReducer = (ping = -1 , action ) => {
+  if ( action.type === "pong") {
+    console.log( action )
+    ping =  Date.now() - action.payload.time
+    return ping
+  }
+  return ping;
+};
+
+
 //
 // Must add reducers to combineReducer
 //
 export default combineReducers({
   orientation: orientationReducer,
   acceleration: accelerationReducer,
-  compass: compassReducer
+  compass: compassReducer,
+  ping: pingReducer
 });
