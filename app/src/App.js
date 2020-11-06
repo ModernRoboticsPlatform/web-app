@@ -18,7 +18,7 @@ class App extends Component {
 
     setInterval(() => {
       client.send( JSON.stringify( { "type":"ping","data": Date.now() } ) )
-    }, 500)
+    }, 1000)
 
     client.onmessage = ( message ) => {
       if( message.data ){
