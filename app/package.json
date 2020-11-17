@@ -11,7 +11,8 @@
     "react-scripts": "3.4.1",
     "react-redux": "",
     "redux": "",
-    "websocket": ""
+    "websocket": "",
+    "react-gamepad": ""
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import Gamepad from 'react-gamepad'
 
 import { messageReceivedAction } from './actions';
+
+const WEB_SOCKET_HOST = process.env.REACT_APP_WEB_SOCKET_HOST || window.location.host
 
 class App extends Component {
 
   componentDidMount() {
-    const websockerUrl = 'ws://' + window.location.host + '/websocket'
+    const websockerUrl = 'ws://' + WEB_SOCKET_HOST + '/websocket'
     console.log( "Connecting to: " + websockerUrl )
 
     const client = new W3CWebSocket( websockerUrl  );
@@ -31,8 +34,39 @@ class App extends Component {
 
   };
 
+  connectHandler(gamepadIndex) {
+    console.log(`Gamepad ${gamepadIndex} connected !`)
+  }
+ 
+  disconnectHandler(gamepadIndex) {
+    console.log(`Gamepad ${gamepadIndex} disconnected !`)
+  }
+ 
+  buttonChangeHandler(buttonName, down) {
+    console.log(buttonName, down)
+  }
+ 
+  axisChangeHandler(axisName, value, previousValue) {
+    console.log(axisName, value)
+  }
+ 
+  buttonDownHandler(buttonName) {
+    console.log(buttonName, 'down')
+  }
+ 
+  buttonUpHandler(buttonName) {
+    console.log(buttonName, 'up')
+  }
+ 
   render() { 
     return (
+      <Gamepad
+            onConnect={this.connectHandler}
+            onDisconnect={this.disconnectHandler}
+
+            onButtonChange={this.buttonChangeHandler}
+            onAxisChange={this.axisChangeHandler}
+      >
       <div>
         <div>
           <b>Ping:</b> { this.props.ping }ms
@@ -111,6 +145,7 @@ class App extends Component {
           </div>
        </div>
        </div>
+       </Gamepad>
        )
    }
 }
